@@ -89,6 +89,7 @@ public class ProductOrderController {
         return new ResponseEntity<>("invalid product order!", HttpStatus.CREATED);
     }
 
+    // get stock ny id
     @GetMapping("/{productId}")
     public ResponseEntity<?> getProductById(@PathVariable Long productId) {
         List<Stock> stocks = stockService.getStockByProductId(productId);

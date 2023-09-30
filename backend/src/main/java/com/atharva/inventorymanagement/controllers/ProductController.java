@@ -33,6 +33,7 @@ public class ProductController {
     @Autowired
     ProductService productService;
 
+    // get all products
     @GetMapping()
     public ResponseEntity<List<Product>> getAllProducts() {
         List<Product> products = productService.getAllProducts();
@@ -40,12 +41,14 @@ public class ProductController {
         return response;
     }
 
+    // create new product
     @PostMapping()
     public ResponseEntity<Product> createProduct(@RequestBody @Valid Product product) {
         Product newProduct = productService.createProduct(product);
         return new ResponseEntity<>(newProduct, HttpStatus.CREATED);
     }
 
+    // get product by id
     @GetMapping("/{productId}")
     public ResponseEntity<Product> getProductById(@PathVariable Long productId) {
         Optional<Product> product = productService.getProductById(productId);
@@ -57,8 +60,10 @@ public class ProductController {
         }
     }
 
+    // update product by id
     @PutMapping("/{productId}")
-    public ResponseEntity<Product> updateProductById(@PathVariable Long productId, @RequestBody @Valid Product updatedProduct) {
+    public ResponseEntity<Product> updateProductById(@PathVariable Long productId,
+            @RequestBody @Valid Product updatedProduct) {
         Optional<Product> product = productService.updateProductbyId(productId, updatedProduct);
         if (product.isPresent()) {
             ResponseEntity<Product> response = new ResponseEntity<Product>(product.get(), null, HttpStatus.OK);
@@ -68,11 +73,13 @@ public class ProductController {
         }
     }
 
+    // delete product by id
     @DeleteMapping("/{productId}")
     public ResponseEntity<String> deleteProductById(@PathVariable Long productId) {
         Boolean result = productService.deleteProductById(productId);
         if (result == true) {
-            ResponseEntity<String> response = new ResponseEntity<String>("product deleted successfully", null, HttpStatus.OK);
+            ResponseEntity<String> response = new ResponseEntity<String>("product deleted successfully", null,
+                    HttpStatus.OK);
             return response;
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "error while attempting to delete product!");
